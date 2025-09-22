@@ -42,8 +42,9 @@ services:
       retries: 5
 
   whishper:
-    pull_policy: always
-    image: pluja/whishper:${WHISHPER_VERSION:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - .env
     volumes:
