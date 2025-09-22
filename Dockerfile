@@ -19,19 +19,16 @@ RUN chmod a+rx whishper
 
 # Frontend setup
 FROM node:alpine as frontend
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
 COPY ./frontend /app
 WORKDIR /app
 
 FROM frontend AS frontend-prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+RUN npm ci --only=production
 
 FROM frontend AS frontend-build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN npm ci
 ENV BODY_SIZE_LIMIT=0
-RUN pnpm run build
+RUN npm run build
 
 # Base container
 FROM python:3.11-slim as base
