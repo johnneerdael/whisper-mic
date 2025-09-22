@@ -1,11 +1,14 @@
 version: '3.9'
 
-services:      
-  translate-cpu:
-    ports:
-      - 5000:5000
-  
-  translate-gpu:
+services:
+  whishper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Override the image directive from the main compose file
+    image: whishper-recording-whishper:dev
+      
+  translate:
     ports:
       - 5000:5000
 
